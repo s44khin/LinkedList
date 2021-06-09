@@ -246,6 +246,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     return cloneList
   }
 
+  /** @return Node from position [index] */
   private fun getNode(index: Int) : Node<T> {
     var x : Node<T>
 
@@ -264,6 +265,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     return x
   }
 
+  /** @return `true` if the argument is the index of an existing element, `false` otherwise */
   private fun isIndex(index: Int) : Boolean {
     return index in 0 until size
   }
