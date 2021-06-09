@@ -1,3 +1,5 @@
+import exceptions.*
+
 class LinkedList<T> {
   private var size = 0
   private lateinit var first : Node<T>
@@ -33,6 +35,9 @@ class LinkedList<T> {
 
   /** @return элемент списка типа T на позиции i */
   operator fun get(i : Int) : T {
+    if (i > size)
+      throw IndexOutOfBoundsException(i)
+
     var x = first
 
     for (t in 0 until i)
