@@ -179,9 +179,8 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
         first = newNode
       }
       size - 1 -> {
-        newNode = Node(x.prev, element, null)
-        x.next = newNode
-        last = newNode
+        newNode = Node(x.prev, element, x)
+        x.prev!!.next = newNode
       }
       else -> {
         newNode = Node(x.prev, element, x)
