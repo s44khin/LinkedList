@@ -43,7 +43,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
 
     /** @return `true` if the iteration has more elements `false` otherwise */
     override fun hasNext() : Boolean {
-      if (i <= size - 1)
+      if (i < size)
         return true
 
       return false
@@ -92,20 +92,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     if (index >= size)
       throw IndexOutOfBoundsException(index)
 
-    var x : Node<T>
-
-    if (index < size / 2) {
-      x = first
-
-      for (i in 0 until index)
-        x = x.next!!
-    } else {
-      x = last
-
-      for(i in size - 1 downTo index + 1)
-        x = x.prev!!
-    }
-
+    val x = getNode(index)
     return x.elem
   }
 
@@ -154,10 +141,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
   /** @return a view of the portion of this list between the specified [fromIndex] (inclusive) and [toIndex] (exclusive) */
   override fun subList(fromIndex: Int, toIndex: Int) : LinkedList<T> {
     val result = LinkedList<T>()
-    var x = first
-
-    for (i in 0 until fromIndex)
-      x = x.next!!
+    var x = getNode(fromIndex)
 
     for (i in fromIndex until toIndex) {
       result.add(x.elem)
@@ -185,15 +169,26 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
 
   /** Adds an [element] to the list at the [index] position with an offset to the end of the list */
   fun add(index : Int, element : T) {
-    var x = first
+    val x = getNode(index)
+    val newNode : Node<T>
 
-    for (t in 0 until index)
-      x = x.next!!
-
-    val newNode = Node(x.prev, element, x)
-
-    x.prev!!.next = newNode
-    x.next!!.prev = newNode
+    when (index) {
+      0 -> {
+        newNode = Node(null, element, x)
+        x.prev = newNode
+        first = newNode
+      }
+      size - 1 -> {
+        newNode = Node(x.prev, element, null)
+        x.next = newNode
+        last = newNode
+      }
+      else -> {
+        newNode = Node(x.prev, element, x)
+        x.prev!!.next = newNode
+        x.next!!.prev = newNode
+      }
+    }
 
     size++
   }
@@ -209,12 +204,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     if (index >= size)
       throw IndexOutOfBoundsException(index)
 
-    var x = first
-
-    for (t in 0 until index)
-      x = x.next!!
-
-    x.elem = element
+    getNode(index).elem = element
   }
 
   /** Removes the list item from position [index] */
@@ -225,13 +215,9 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     if (size == 1)
       first.elem = null!!
 
-    var x = first
-
-    for (t in 0 until index)
-      x = x.next!!
+    val x = getNode(index)
 
     x.prev!!.next = x.next!!
-
     size--
   }
 
@@ -243,5 +229,23 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
       cloneList.add(element)
 
     return cloneList
+  }
+
+  private fun getNode(index: Int) : Node<T> {
+    var x : Node<T>
+
+    if (index < size / 2) {
+      x = first
+
+      for (t in 0 until index)
+        x = x.next!!
+    } else {
+      x = last
+
+      for(i in size - 1 downTo index + 1)
+        x = x.prev!!
+    }
+
+    return x
   }
 }
