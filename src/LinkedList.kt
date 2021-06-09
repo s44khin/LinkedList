@@ -92,10 +92,19 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     if (index >= size)
       throw IndexOutOfBoundsException(index)
 
-    var x = first
+    var x : Node<T>
 
-    for (t in 0 until index)
-      x = x.next!!
+    if (index < size / 2) {
+      x = first
+
+      for (i in 0 until index)
+        x = x.next!!
+    } else {
+      x = last
+
+      for(i in size - 1 downTo index + 1)
+        x = x.prev!!
+    }
 
     return x.elem
   }
