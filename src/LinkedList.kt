@@ -152,14 +152,15 @@ class LinkedList<T>(vararg args : T) : List<T> {
     return result
   }
 
-  fun add(elem : T) {
+  /** Adds [element] to the end of the list */
+  fun add(element : T) {
     if (size == 0) {
-      last = Node(null, elem, null)
+      last = Node(null, element, null)
       first = last
       first.next = last
     } else {
       val one = last
-      val newElem = Node(one, elem, null)
+      val newElem = Node(one, element, null)
       one.next = newElem
       last = newElem
     }
@@ -167,13 +168,14 @@ class LinkedList<T>(vararg args : T) : List<T> {
     size++
   }
 
-  fun add(i : Int, elem : T) {
+  /** Adds an [element] to the list at the [index] position with an offset to the end of the list */
+  fun add(index : Int, element : T) {
     var x = first
 
-    for (t in 0 until i)
+    for (t in 0 until index)
       x = x.next!!
 
-    val newNode = Node(x.prev, elem, x)
+    val newNode = Node(x.prev, element, x)
 
     x.prev!!.next = newNode
     x.next!!.prev = newNode
@@ -181,33 +183,36 @@ class LinkedList<T>(vararg args : T) : List<T> {
     size++
   }
 
-  fun addAll(vararg elems : T) {
-    for (elem in elems)
+  /** Adds many [elements] to the end of the list */
+  fun addAll(vararg elements : T) {
+    for (elem in elements)
       add(elem)
   }
 
-  operator fun set(i: Int, elem: T) {
-    if (i >= size)
-      throw IndexOutOfBoundsException(i)
+  /** Writes a new [element] to the [index] position of the list */
+  operator fun set(index: Int, element: T) {
+    if (index >= size)
+      throw IndexOutOfBoundsException(index)
 
     var x = first
 
-    for (t in 0 until i)
+    for (t in 0 until index)
       x = x.next!!
 
-    x.elem = elem
+    x.elem = element
   }
 
-  fun remove(i : Int) {
-    if (i >= size)
-      throw IndexOutOfBoundsException(i)
+  /** Removes the list item from position [index] */
+  fun remove(index : Int) {
+    if (index >= size)
+      throw IndexOutOfBoundsException(index)
 
     if (size == 1)
       first.elem = null!!
 
     var x = first
 
-    for (t in 0 until i)
+    for (t in 0 until index)
       x = x.next!!
 
     x.prev!!.next = x.next!!
