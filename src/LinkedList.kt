@@ -2,7 +2,7 @@
  * Kotlin implementation of LinkedList (Java)
  * @author s44khin
  */
-class LinkedList<T>(vararg args : T) : List<T> {
+class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
   /** List size */
   override var size = 0
   /** First element */
@@ -218,5 +218,15 @@ class LinkedList<T>(vararg args : T) : List<T> {
     x.prev!!.next = x.next!!
 
     size--
+  }
+
+  /** @return a copy of list */
+  public override fun clone() : LinkedList<T> {
+    val cloneList =  LinkedList<T>()
+
+    for (element in this)
+      cloneList.add(element)
+
+    return cloneList
   }
 }
