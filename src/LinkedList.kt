@@ -89,7 +89,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
 
   /** @return the element at the specified [index] in the list */
   override operator fun get(index : Int) : T {
-    if (index < size)
+    if (!(isIndex(index)))
       throw IndexOutOfBoundsException(index)
 
     val x = getNode(index)
@@ -140,6 +140,9 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
 
   /** @return a view of the portion of this list between the specified [fromIndex] (inclusive) and [toIndex] (exclusive) */
   override fun subList(fromIndex: Int, toIndex: Int) : LinkedList<T> {
+    if (!(isIndex(fromIndex)) || !(isIndex(toIndex - 1)))
+      throw IndexOutOfBoundsException(fromIndex)
+
     val result = LinkedList<T>()
     var x = getNode(fromIndex)
 
@@ -169,7 +172,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
 
   /** Adds an [element] to the list at the [index] position with an offset to the end of the list */
   fun add(index : Int, element : T) {
-    if (index >= size)
+    if (!(isIndex(index)))
       throw IndexOutOfBoundsException(index)
 
     val x = getNode(index)
@@ -203,7 +206,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
 
   /** Writes a new [element] to the [index] position of the list */
   operator fun set(index: Int, element: T) {
-    if (index >= size)
+    if (!(isIndex(index)))
       throw IndexOutOfBoundsException(index)
 
     getNode(index).elem = element
