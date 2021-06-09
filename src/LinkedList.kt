@@ -127,15 +127,15 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
   /** @return the index of the last occurrence of the specified [element] in the list, or -1 if the specified
    * element is not contained in the list */
   override fun lastIndexOf(element: T): Int {
-    var x = first
+    var x = last
     var result = -1
 
-    for (t in 0 until size) {
+    for (i in size - 1 downTo 0) {
       if (x.elem == element)
-        result = t
+        result = i
 
-      if (t < size - 1)
-        x = x.next!!
+      if (i > 0)
+        x = x.prev!!
     }
 
     return result
