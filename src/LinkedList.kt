@@ -1,13 +1,67 @@
-import exceptions.*
-
-class LinkedList<T> {
-  private var size = 0
+class LinkedList<T> : List<T> {
+  override var size = 0
   private lateinit var first : Node<T>
   private lateinit var last : Node<T>
 
   class Node<T>(var prev: Node<T>?, var elem: T, var next: Node<T>?)
 
-  /** Добавляет элемент типа T в конец списка */
+  override fun isEmpty() : Boolean {
+    return size == 0
+  }
+
+  override fun contains(element : T) : Boolean {
+    var x = first
+
+    for (node in 0 until size) {
+      if (x.elem == element)
+        return true
+
+      x = x.next!!
+    }
+
+    return false
+  }
+
+  override fun containsAll(elements: Collection<T>): Boolean {
+    TODO("Not yet implemented")
+  }
+
+  override fun iterator(): Iterator<T> {
+    TODO("Not yet implemented")
+  }
+
+  override operator fun get(index : Int) : T {
+    if (index >= size)
+      throw IndexOutOfBoundsException(index)
+
+    var x = first
+
+    for (t in 0 until index)
+      x = x.next!!
+
+    return x.elem
+  }
+
+  override fun indexOf(element: T): Int {
+    TODO("Not yet implemented")
+  }
+
+  override fun lastIndexOf(element: T): Int {
+    TODO("Not yet implemented")
+  }
+
+  override fun listIterator(): ListIterator<T> {
+    TODO("Not yet implemented")
+  }
+
+  override fun listIterator(index: Int): ListIterator<T> {
+    TODO("Not yet implemented")
+  }
+
+  override fun subList(fromIndex: Int, toIndex: Int): List<T> {
+    TODO("Not yet implemented")
+  }
+
   fun add(elem : T) {
     if (size == 0) {
       last = Node(null, elem, null)
@@ -23,30 +77,15 @@ class LinkedList<T> {
     size++
   }
 
-//  fun add(i : Int, elem : T) {
-//    var newNode =
-//  }
+  fun add(i : Int, elem : T) {
+    TODO("Not yet implemented")
+  }
 
-  /** Добавляет несколько элеменов в конец списка в том порядке, в каком они поступили */
   fun addAll(vararg elems : T) {
     for (elem in elems)
       add(elem)
   }
 
-  /** @return элемент списка типа T на позиции i */
-  operator fun get(i : Int) : T {
-    if (i >= size)
-      throw IndexOutOfBoundsException(i)
-
-    var x = first
-
-    for (t in 0 until i)
-      x = x.next!!
-
-    return x.elem
-  }
-
-  /** Устанавливает элемент типа T в список на позицию i */
   operator fun set(i: Int, elem: T) {
     if (i >= size)
       throw IndexOutOfBoundsException(i)
@@ -74,9 +113,5 @@ class LinkedList<T> {
     x.prev!!.next = x.next!!
 
     size--
-  }
-
-  fun size() : Int {
-    return size
   }
 }
