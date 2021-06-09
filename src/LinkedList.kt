@@ -52,6 +52,9 @@ class LinkedList<T> {
   }
 
   fun remove(i : Int) {
+    if (size == 1)
+      first.elem = null!!
+
     var x = first
 
     for (t in 0 until i)
@@ -64,19 +67,5 @@ class LinkedList<T> {
 
   fun size() : Int {
     return size
-  }
-
-  override fun toString(): String {
-    var result = " "
-    var x = first
-
-    for (i in 0 until size) {
-      result += x.elem as String + " "
-      if (i != size - 1) {
-        x = x.next!!
-      }
-    }
-
-    return result
   }
 }

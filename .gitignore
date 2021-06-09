@@ -1,0 +1,5 @@
+.gitignore
+out
+.idea
+LinkedList.iml
+Main.kt
