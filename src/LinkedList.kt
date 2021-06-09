@@ -10,6 +10,29 @@ class LinkedList<T>(vararg args : T) : List<T> {
 
   class Node<T>(var prev: Node<T>?, var elem: T, var next: Node<T>?)
 
+  inner class LinkedListIterator : Iterator<T> {
+    private var i = 0
+    private var current = first
+
+    override fun next() : T {
+      val result = current
+      i++
+
+      if (hasNext()) {
+        current = current.next!!
+      }
+
+      return result.elem
+    }
+
+    override fun hasNext() : Boolean {
+      if (i <= size - 1)
+        return true
+
+      return false
+    }
+  }
+
   override fun isEmpty() : Boolean {
     return size == 0
   }
@@ -40,7 +63,7 @@ class LinkedList<T>(vararg args : T) : List<T> {
   }
 
   override fun iterator(): Iterator<T> {
-    return LinkedListIterator(this)
+    return LinkedListIterator()
   }
 
   override operator fun get(index : Int) : T {
@@ -126,28 +149,5 @@ class LinkedList<T>(vararg args : T) : List<T> {
     x.prev!!.next = x.next!!
 
     size--
-  }
-
-  class LinkedListIterator<T>(private val list : LinkedList<T>) : Iterator<T> {
-    private var i = 0
-    private var current = list.first
-
-    override fun next() : T {
-      val result = current
-      i++
-
-      if (hasNext()) {
-        current = current.next!!
-      }
-
-      return result.elem
-    }
-
-    override fun hasNext() : Boolean {
-      if (i <= list.size - 1)
-        return true
-
-      return false
-    }
   }
 }
