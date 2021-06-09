@@ -35,7 +35,7 @@ class LinkedList<T> {
 
   /** @return элемент списка типа T на позиции i */
   operator fun get(i : Int) : T {
-    if (i > size)
+    if (i >= size)
       throw IndexOutOfBoundsException(i)
 
     var x = first
@@ -48,6 +48,9 @@ class LinkedList<T> {
 
   /** Устанавливает элемент типа T в список на позицию i */
   operator fun set(i: Int, elem: T) {
+    if (i >= size)
+      throw IndexOutOfBoundsException(i)
+
     var x = first
 
     for (t in 0 until i)
@@ -57,6 +60,9 @@ class LinkedList<T> {
   }
 
   fun remove(i : Int) {
+    if (i >= size)
+      throw IndexOutOfBoundsException(i)
+
     if (size == 1)
       first.elem = null!!
 
