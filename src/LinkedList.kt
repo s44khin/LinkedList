@@ -152,11 +152,17 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
   }
 
   /** @return a view of the portion of this list between the specified [fromIndex] (inclusive) and [toIndex] (exclusive) */
-  override fun subList(fromIndex: Int, toIndex: Int): List<T> {
+  override fun subList(fromIndex: Int, toIndex: Int) : LinkedList<T> {
     val result = LinkedList<T>()
+    var x = first
 
-    for (i in fromIndex until toIndex)
-      result.add(this[i])
+    for (i in 0 until fromIndex)
+      x = x.next!!
+
+    for (i in fromIndex until toIndex) {
+      result.add(x.elem)
+      x = x.next!!
+    }
 
     return result
   }
