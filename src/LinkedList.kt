@@ -1,7 +1,12 @@
-class LinkedList<T> : List<T> {
+class LinkedList<T>(vararg args : T) : List<T> {
   override var size = 0
   private lateinit var first : Node<T>
   private lateinit var last : Node<T>
+
+  init {
+    if (args.size == 1) add(args[0])
+    else addAll(*args)
+  }
 
   class Node<T>(var prev: Node<T>?, var elem: T, var next: Node<T>?)
 
@@ -16,14 +21,22 @@ class LinkedList<T> : List<T> {
       if (x.elem == element)
         return true
 
-      x = x.next!!
+      if (node < size - 1)
+        x = x.next!!
+      else
+        return false
     }
 
     return false
   }
 
   override fun containsAll(elements: Collection<T>): Boolean {
-    TODO("Not yet implemented")
+    for (elem in elements) {
+      if (!(contains(elem)))
+        return false
+    }
+
+    return true
   }
 
   override fun iterator(): Iterator<T> {
