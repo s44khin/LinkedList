@@ -11,8 +11,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
   private lateinit var last : Node<T>
 
   init {
-    if (args.size == 1) add(args[0])
-    else addAll(*args)
+    addAll(*args)
   }
 
   /**
