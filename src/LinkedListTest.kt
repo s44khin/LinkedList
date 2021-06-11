@@ -144,9 +144,9 @@ internal class LinkedListTest {
   }
 
   @org.junit.jupiter.api.Test
-  fun remove() {
+  fun removeAt() {
     val list1 = LinkedList(0, 1, 2, 3, 4, 5, 6)
-    list1.remove(0)
+    list1.removeAt(0)
 
     Assertions.assertEquals(1, list1[0])
     Assertions.assertEquals(2, list1[1])
@@ -155,7 +155,7 @@ internal class LinkedListTest {
     Assertions.assertEquals(5, list1[4])
     Assertions.assertEquals(6, list1[5])
 
-    list1.remove(5)
+    list1.removeAt(5)
 
     Assertions.assertEquals(1, list1[0])
     Assertions.assertEquals(2, list1[1])
@@ -163,7 +163,7 @@ internal class LinkedListTest {
     Assertions.assertEquals(4, list1[3])
     Assertions.assertEquals(5, list1[4])
 
-    list1.remove(2)
+    list1.removeAt(2)
 
     Assertions.assertEquals(1, list1[0])
     Assertions.assertEquals(2, list1[1])

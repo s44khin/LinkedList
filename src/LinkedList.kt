@@ -2,13 +2,15 @@
  * Kotlin implementation of LinkedList (Java)
  * @author s44khin
  */
-class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
+class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   /** List size */
   override var size = 0
+
   /** First element */
-  private lateinit var first : Node<T>
+  private lateinit var first: Node<T>
+
   /** Last element */
-  private lateinit var last : Node<T>
+  private lateinit var last: Node<T>
 
   init {
     addAll(*args)
@@ -21,143 +23,8 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
    */
   class Node<T>(var prev: Node<T>?, var elem: T, var next: Node<T>?)
 
-  /** Iterator. Allows to sequentially access the elements */
-  inner class LinkedListIterator : Iterator<T> {
-    /** The current index of the list */
-    private var i = 0
-    /** Current list element */
-    private var current = first
-
-    /** @return the next element in the iteration */
-    override fun next() : T {
-      val result = current
-      i++
-
-      if (hasNext()) {
-        current = current.next!!
-      }
-
-      return result.elem
-    }
-
-    /** @return `true` if the iteration has more elements `false` otherwise */
-    override fun hasNext() : Boolean {
-      if (i < size)
-        return true
-
-      return false
-    }
-  }
-
-  /** @return `true` if the collection is empty (contains no elements), `false` otherwise */
-  override fun isEmpty() : Boolean {
-    return size == 0
-  }
-
-  /** @return `true` - if the [element] is contained in the specified collection, `false` otherwise */
-  override fun contains(element : T) : Boolean {
-    var x = first
-
-    for (node in 0 until size) {
-      if (x.elem == element)
-        return true
-
-      if (node < size - 1)
-        x = x.next!!
-      else
-        return false
-    }
-
-    return false
-  }
-
-  /** @return `true` - if the all [elements] of collection is contained in the specified collection, `false` otherwise */
-  override fun containsAll(elements: Collection<T>): Boolean {
-    for (elem in elements) {
-      if (!(contains(elem)))
-        return false
-    }
-
-    return true
-  }
-
-  /** @return an iterator over the elements of this object */
-  override fun iterator(): Iterator<T> {
-    return LinkedListIterator()
-  }
-
-  /** @return the element at the specified [index] in the list */
-  override operator fun get(index : Int) : T {
-    if (!(isIndex(index)))
-      throw IndexOutOfBoundsException(index)
-
-    val x = getNode(index)
-    return x.elem
-  }
-
-  /** @return the index of the first occurrence of the specified [element] in the list, or -1 if the specified
-   * element is not contained in the list */
-  override fun indexOf(element: T): Int {
-    var x = first
-
-    for (t in 0 until size) {
-      if (x.elem == element)
-        return t
-
-      x = x.next!!
-    }
-
-    return -1
-  }
-
-  /** @return the index of the last occurrence of the specified [element] in the list, or -1 if the specified
-   * element is not contained in the list */
-  override fun lastIndexOf(element: T): Int {
-    var x = last
-
-    for (i in size - 1 downTo 0) {
-      if (x.elem == element)
-        return i
-
-      if (i > 0)
-        x = x.prev!!
-      else
-        return -1
-    }
-
-    return -1
-  }
-
-  /** @return a list iterator over the elements in this list (in proper sequence) */
-  override fun listIterator(): ListIterator<T> {
-    TODO("Not yet implemented")
-  }
-
-  /** @return a list iterator over the elements in this list (in proper sequence), starting at the specified [index] */
-  override fun listIterator(index: Int): ListIterator<T> {
-    TODO("Not yet implemented")
-  }
-
-  /** @return a view of the portion of this list between the specified [fromIndex] (inclusive) and [toIndex] (exclusive) */
-  override fun subList(fromIndex: Int, toIndex: Int) : LinkedList<T> {
-    if (!(isIndex(fromIndex)) || !(isIndex(toIndex - 1)))
-      throw IndexOutOfBoundsException(fromIndex)
-
-    val result = LinkedList<T>()
-    var x = getNode(fromIndex)
-
-    for (i in fromIndex until toIndex) {
-      result.add(x.elem)
-
-      if (i < size - 1)
-        x = x.next!!
-    }
-
-    return result
-  }
-
-  /** Adds [element] to the end of the list */
-  fun add(element : T) {
+  /** Adds [element] to the end of the list. */
+  override fun add(element: T): Boolean {
     if (size == 0) {
       first = Node(null, element, null)
       last = first
@@ -167,15 +34,16 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     }
 
     size++
+    return true
   }
 
-  /** Adds an [element] to the list at the [index] position with an offset to the end of the list */
-  fun add(index : Int, element : T) {
+  /** Adds an [element] to the list at the [index] position with an offset to the end of the list. */
+  override fun add(index: Int, element: T) {
     if (!(isIndex(index)))
       throw IndexOutOfBoundsException(index)
 
     val x = getNode(index)
-    val newNode : Node<T>
+    val newNode: Node<T>
 
     when (index) {
       0 -> {
@@ -197,22 +65,43 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     size++
   }
 
-  /** Adds many [elements] to the end of the list */
-  fun addAll(vararg elements : T) {
-    for (elem in elements)
-      add(elem)
+  /** Inserts all of the elements of the specified collection [elements] into this list. */
+  fun addAll(vararg elements: T): Boolean {
+    for (element in elements)
+      add(element)
+
+    return true
   }
 
-  /** Writes a new [element] to the [index] position of the list */
-  operator fun set(index: Int, element: T) {
-    if (!(isIndex(index)))
-      throw IndexOutOfBoundsException(index)
+  /**
+   * Inserts all of the elements of the specified collection [elements] into this list at the specified [index].
+   * @return `true` if the list was changed as the result of the operation.
+   */
+  override fun addAll(index: Int, elements: Collection<T>): Boolean {
+    var i = index
 
-    getNode(index).elem = element
+    for (element in elements) {
+      add(i, element)
+      i++
+    }
+
+    return true
+  }
+
+  /**
+   * Adds all of the elements of the specified collection to the end of this list.
+   * The elements are appended in the order they appear in the elements collection.
+   * @return `true` if the list was changed as the result of the operation.
+   */
+  override fun addAll(elements: Collection<T>): Boolean {
+    for (element in elements)
+      add(element)
+
+    return true
   }
 
   /** Removes the list item from position [index] */
-  fun remove(index : Int) {
+  override fun removeAt(index: Int): T {
     if (!(isIndex(index)))
       throw IndexOutOfBoundsException(index)
 
@@ -231,11 +120,194 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     }
 
     size--
+    return x.elem
   }
 
-  /** @return a copy of list */
-  public override fun clone() : LinkedList<T> {
-    val cloneList =  LinkedList<T>()
+  /**
+   * Removes a single instance of the specified element from this
+   * collection, if it is present.
+   * @return `true` if the element has been successfully removed; `false` if it was not present in the collection.
+   */
+  override fun remove(element: T): Boolean {
+    val check = indexOf(element)
+
+    return if (check != -1) {
+      removeAt(check)
+      true
+    } else
+      false
+  }
+
+  /**
+   * Removes all elements in this collection that are also in the set of arguments passed
+   * @return `true` if any of the specified items have been removed from the collection, `false` if the collection has not changed.
+   */
+  fun removeAll(vararg elements: T): Boolean {
+    var result = false
+
+    for (element in elements) {
+      val check = indexOf(element)
+
+      if (check != -1) {
+        removeAt(check)
+        result = true
+      }
+    }
+
+    return result
+  }
+
+  /**
+   * Removes all of this collection's elements that are also contained in the specified collection.
+   * @return `true` if any of the specified elements was removed from the collection, `false` if the collection was not modified.
+   */
+  override fun removeAll(elements: Collection<T>): Boolean {
+    var result = false
+
+    for (element in elements) {
+      val check = indexOf(element)
+
+      if (check != -1) {
+        removeAt(check)
+        result = true
+      }
+    }
+
+    return result
+  }
+
+  /** @return the element at the specified [index] in the list. */
+  override operator fun get(index: Int): T {
+    if (!(isIndex(index)))
+      throw IndexOutOfBoundsException(index)
+
+    val x = getNode(index)
+    return x.elem
+  }
+
+  /** Writes a new [element] to the [index] position of the list. */
+  override operator fun set(index: Int, element: T): T {
+    if (!(isIndex(index)))
+      throw IndexOutOfBoundsException(index)
+
+    val node = getNode(index)
+    val oldElem = node.elem
+    node.elem = element
+
+    return oldElem
+  }
+
+  /**
+   * @return the index of the first occurrence of the specified [element] in the list, or -1 if the specified
+   * element is not contained in the list.
+   */
+  override fun indexOf(element: T): Int {
+    var x = first
+
+    for (t in 0 until size) {
+      if (x.elem == element)
+        return t
+
+      x = x.next!!
+    }
+
+    return -1
+  }
+
+  /**
+   * @return the index of the last occurrence of the specified [element] in the list, or -1 if the specified
+   * element is not contained in the list.
+   */
+  override fun lastIndexOf(element: T): Int {
+    var x = last
+
+    for (i in size - 1 downTo 0) {
+      if (x.elem == element)
+        return i
+
+      if (i > 0)
+        x = x.prev!!
+      else
+        return -1
+    }
+
+    return -1
+  }
+
+  /** @return `true` if the collection is empty (contains no elements), `false` otherwise. */
+  override fun isEmpty(): Boolean {
+    return size == 0
+  }
+
+  /** @return `true` - if the [element] is contained in the specified collection, `false` otherwise. */
+  override fun contains(element: T): Boolean {
+    var x = first
+
+    for (node in 0 until size) {
+      if (x.elem == element)
+        return true
+
+      if (node < size - 1)
+        x = x.next!!
+      else
+        return false
+    }
+
+    return false
+  }
+
+  /** @return `true` - if the all [elements] of collection is contained in the specified collection, `false` otherwise. */
+  override fun containsAll(elements: Collection<T>): Boolean {
+    for (elem in elements) {
+      if (!(contains(elem)))
+        return false
+    }
+
+    return true
+  }
+
+  /** @return a view of the portion of this list between the specified [fromIndex] (inclusive) and [toIndex] (exclusive). */
+  override fun subList(fromIndex: Int, toIndex: Int): LinkedList<T> {
+    if (!(isIndex(fromIndex)) || !(isIndex(toIndex - 1)))
+      throw IndexOutOfBoundsException(fromIndex)
+
+    val result = LinkedList<T>()
+    var x = getNode(fromIndex)
+
+    for (i in fromIndex until toIndex) {
+      result.add(x.elem)
+
+      if (i < size - 1)
+        x = x.next!!
+    }
+
+    return result
+  }
+
+  /** Removes all elements from this collection. */
+  override fun clear() {
+    TODO("Not yet implemented")
+  }
+
+  /**
+   * Retains only the elements in this collection that are contained in the specified collection.
+   * @return `true` if any element was removed from the collection, `false` if the collection was not modified.
+   */
+  override fun retainAll(elements: Collection<T>): Boolean {
+    var check = false
+
+    for (element in this)
+      if (element !in elements) {
+        remove(element)
+        check = true
+      }
+
+    return check
+  }
+
+  /** @return a copy of list. */
+  public override fun clone(): LinkedList<T> {
+    val cloneList = LinkedList<T>()
 
     for (element in this)
       cloneList.add(element)
@@ -243,9 +315,9 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     return cloneList
   }
 
-  /** @return Node from position [index] */
-  private fun getNode(index: Int) : Node<T> {
-    var x : Node<T>
+  /** @return Node from position [index]. */
+  private fun getNode(index: Int): Node<T> {
+    var x: Node<T>
 
     if (index < size / 2) {
       x = first
@@ -255,15 +327,94 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
     } else {
       x = last
 
-      for(i in size - 1 downTo index + 1)
+      for (i in size - 1 downTo index + 1)
         x = x.prev!!
     }
 
     return x
   }
 
-  /** @return `true` if the argument is the index of an existing element, `false` otherwise */
-  private fun isIndex(index: Int) : Boolean {
+  /** @return `true` if the argument is the index of an existing element, `false` otherwise. */
+  private fun isIndex(index: Int): Boolean {
     return index in 0 until size
+  }
+
+  /** @return an iterator over the elements of this object. */
+  override fun iterator(): MutableIterator<T> {
+    return LinkedListIterator()
+  }
+
+  /** @return a list iterator over the elements in this list (in proper sequence). */
+  override fun listIterator(): MutableListIterator<T> {
+    return LinkedListIterator()
+  }
+
+  /** @return a list iterator over the elements in this list (in proper sequence), starting at the specified [index]. */
+  override fun listIterator(index: Int): MutableListIterator<T> {
+    return LinkedListIterator()
+  }
+
+  /** Iterator. Allows to sequentially access the elements. */
+  inner class LinkedListIterator: MutableListIterator<T> {
+    var i = 0
+    var current = first
+
+    /** @return `true` if there are elements in the iteration before the current element. */
+    override fun hasPrevious(): Boolean {
+      if (i > 0)
+        return true
+
+      return false
+    }
+
+    /** @return the index of the element that would be returned by a subsequent call to [previous]. */
+    override fun previousIndex(): Int {
+      return i - 1
+    }
+
+    /** @return the previous element in the iteration and moves the cursor position backwards. */
+    override fun previous(): T {
+      if (i != size - 1)
+        current = current.prev!!
+
+      i--
+      return current.elem
+    }
+
+    /** @return `true` if the iteration has more elements. `false` otherwise. */
+    override fun hasNext(): Boolean {
+      if (i < size)
+        return true
+
+      return false
+    }
+
+    override fun nextIndex(): Int {
+      return i + 1
+    }
+
+    /** @return the next element in the iteration. */
+    override fun next(): T {
+      if (i != 0)
+        current = current.next!!
+
+      i++
+      return current.elem
+    }
+
+    /** Adds the specified element element into the underlying collection. */
+    override fun add(element: T) {
+      add(i, element)
+    }
+
+    /** Removes from the underlying collection the last element returned by this iterator. */
+    override fun remove() {
+      removeAt(i)
+    }
+
+    /** Replaces the last element returned by [next] or [previous] with the specified element [element]. */
+    override fun set(element: T) {
+      set(i, element)
+    }
   }
 }
