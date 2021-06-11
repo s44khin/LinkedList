@@ -100,7 +100,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
   override fun indexOf(element: T): Int {
     var x = first
 
-    for (t in 0 until size - 1) {
+    for (t in 0 until size) {
       if (x.elem == element)
         return t
 
@@ -114,17 +114,18 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
    * element is not contained in the list */
   override fun lastIndexOf(element: T): Int {
     var x = last
-    var result = -1
 
     for (i in size - 1 downTo 0) {
       if (x.elem == element)
-        result = i
+        return i
 
       if (i > 0)
         x = x.prev!!
+      else
+        return -1
     }
 
-    return result
+    return -1
   }
 
   /** @return a list iterator over the elements in this list (in proper sequence) */
@@ -147,7 +148,9 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
 
     for (i in fromIndex until toIndex) {
       result.add(x.elem)
-      x = x.next!!
+
+      if (i < size - 1)
+        x = x.next!!
     }
 
     return result
