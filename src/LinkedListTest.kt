@@ -64,10 +64,10 @@ internal class LinkedListTest {
     val list2 = list1.subList(2, 6)
     val list3 = list1.subList(0, 9)
 
-    Assertions.assertEquals( list1[2], list2[0])
-    Assertions.assertEquals( list1[3], list2[1])
-    Assertions.assertEquals( list1[4], list2[2])
-    Assertions.assertEquals( list1[5], list2[3])
+    Assertions.assertEquals(list1[2], list2[0])
+    Assertions.assertEquals(list1[3], list2[1])
+    Assertions.assertEquals(list1[4], list2[2])
+    Assertions.assertEquals(list1[5], list2[3])
 
     Assertions.assertEquals(list1[0], list3[0])
     Assertions.assertEquals(list1[1], list3[1])
