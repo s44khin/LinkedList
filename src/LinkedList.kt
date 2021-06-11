@@ -159,14 +159,11 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
   /** Adds [element] to the end of the list */
   fun add(element : T) {
     if (size == 0) {
-      last = Node(null, element, null)
-      first = last
-      first.next = last
+      first = Node(null, element, null)
+      last = first
     } else {
-      val one = last
-      val newElem = Node(one, element, null)
-      one.next = newElem
-      last = newElem
+      last.next = Node(last, element, null)
+      last = last.next!!
     }
 
     size++
@@ -230,9 +227,7 @@ class LinkedList<T>(vararg args : T) : List<T>, Cloneable {
         last = x.prev!!
         last.next = null
       }
-      else -> {
-        x.prev!!.next = x.next!!
-      }
+      else -> x.prev!!.next = x.next!!
     }
 
     size--
