@@ -327,6 +327,37 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     return cloneList
   }
 
+  /** Reverse the current list. */
+  fun reverse() {
+    var nodeStart = first
+    var nodeEnd = last
+
+    for (i in 0 until size / 2) {
+      val temp = nodeStart.elem
+      nodeStart.elem = nodeEnd.elem
+      nodeEnd.elem = temp
+      nodeStart = nodeStart.next!!
+      nodeEnd = nodeEnd.prev!!
+    }
+  }
+
+  /** @return a new list containing the current reversing list. */
+  fun getReverse(): LinkedList<T> {
+    val newList = clone()
+    var nodeStart = newList.first
+    var nodeEnd = newList.last
+
+    for (i in 0 until size / 2) {
+      val temp = nodeStart.elem
+      nodeStart.elem = nodeEnd.elem
+      nodeEnd.elem = temp
+      nodeStart = nodeStart.next!!
+      nodeEnd = nodeEnd.prev!!
+    }
+
+    return newList
+  }
+
   /** @return Node from position [index]. */
   private fun getNode(index: Int): Node<T> {
     var x : Node<T>

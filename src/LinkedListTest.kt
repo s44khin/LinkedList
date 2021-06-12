@@ -304,5 +304,37 @@ internal class LinkedListTest {
     for (i in 0 until list1.size)
       assertEquals(list1[i], list2[i])
   }
+
+  @Test
+  fun reverse() {
+    val list1 = LinkedList(0, 1, 2, 3, 4, 5, 6)
+    list1.reverse()
+
+    assertEquals(6, list1[0])
+    assertEquals(5, list1[1])
+    assertEquals(4, list1[2])
+    assertEquals(3, list1[3])
+    assertEquals(2, list1[4])
+    assertEquals(1, list1[5])
+    assertEquals(0, list1[6])
+  }
+
+  @Test
+  fun getReverse() {
+    val list1 = randomList(5)
+
+    for (elem in list1)
+      print("$elem ")
+
+    val list2 = list1.getReverse()
+
+    println()
+
+    for (elem in list2)
+      print("$elem ")
+
+    for (i in 0 until list1.size)
+      assertEquals(list1[i], list2[list2.size - 1 - i])
+  }
 }
 
