@@ -335,10 +335,17 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
 
   /** @return Node from position [index]. */
   private fun getNode(index: Int): Node<T> {
-    var x = first
+    var x : Node<T>
 
-    for (i in 0 until index)
-      x = x.next!!
+    if (index < size / 2) {
+      x = first
+      for (i in 0 until index)
+        x = x.next!!
+    } else {
+      x = last
+      for (i in index until size - 1)
+        x = x.prev!!
+    }
 
     return x
   }
