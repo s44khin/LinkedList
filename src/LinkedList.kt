@@ -21,7 +21,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
    * @param prev previous element (null - if element is first)
    * @param next next element (null - if element is last)
    */
-  class Node<T>(var prev: Node<T>?, var elem: T, var next: Node<T>?)
+  class Node<T>(var prev: Node<T>?, var elem: T?, var next: Node<T>?)
 
   /** Adds [element] to the end of the list. */
   override fun add(element: T): Boolean {
@@ -43,22 +43,16 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
       throw IndexOutOfBoundsException(index)
 
     val x = getNode(index)
-    val newNode: Node<T>
 
     when (index) {
       0 -> {
-        newNode = Node(null, element, x)
-        x.prev = newNode
-        first = newNode
+        x.prev = Node(null, element, x)
+        first = x.prev!!
       }
-      size - 1 -> {
-        newNode = Node(x.prev, element, x)
-        x.prev!!.next = newNode
-      }
+      size - 1 -> x.prev!!.next = Node(x.prev, element, x)
       else -> {
-        newNode = Node(x.prev, element, x)
-        x.prev!!.next = newNode
-        x.next!!.prev = newNode
+        x.prev!!.next = Node(x.prev, element, x)
+        x.prev = x.prev!!.next!!
       }
     }
 
@@ -88,7 +82,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     return true
   }
 
-  /**
+   /**
    * Adds all of the elements of the specified collection to the end of this list.
    * The elements are appended in the order they appear in the elements collection.
    * @return `true` if the list was changed as the result of the operation.
@@ -116,11 +110,14 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
         last = x.prev!!
         last.next = null
       }
-      else -> x.prev!!.next = x.next!!
+      else -> {
+        x.prev!!.next = x.next
+        x.next!!.prev = x.prev
+      }
     }
 
     size--
-    return x.elem
+    return x.elem!!
   }
 
   /**
@@ -143,18 +140,20 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
    * @return `true` if any of the specified items have been removed from the collection, `false` if the collection has not changed.
    */
   fun removeAll(vararg elements: T): Boolean {
-    var result = false
+    var i = 0
+    var check = false
 
-    for (element in elements) {
-      val check = indexOf(element)
-
-      if (check != -1) {
-        removeAt(check)
-        result = true
+    while (i in 0 until size) {
+      if (this[i] in elements) {
+        remove(this[i])
+        i--
+        check = true
       }
+
+      i++
     }
 
-    return result
+    return check
   }
 
   /**
@@ -162,18 +161,20 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
    * @return `true` if any of the specified elements was removed from the collection, `false` if the collection was not modified.
    */
   override fun removeAll(elements: Collection<T>): Boolean {
-    var result = false
+    var i = 0
+    var check = false
 
-    for (element in elements) {
-      val check = indexOf(element)
-
-      if (check != -1) {
-        removeAt(check)
-        result = true
+    while (i in 0 until size) {
+      if (this[i] in elements) {
+        remove(this[i])
+        i--
+        check = true
       }
+
+      i++
     }
 
-    return result
+    return check
   }
 
   /** @return the element at the specified [index] in the list. */
@@ -182,7 +183,17 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
       throw IndexOutOfBoundsException(index)
 
     val x = getNode(index)
-    return x.elem
+    return x.elem!!
+  }
+
+  /** @return the first element of the list. */
+  fun getFirst() : T {
+    return first.elem!!
+  }
+
+  /** @return the last element of the list. */
+  fun getLast() : T {
+    return last.elem!!
   }
 
   /** Writes a new [element] to the [index] position of the list. */
@@ -194,7 +205,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     val oldElem = node.elem
     node.elem = element
 
-    return oldElem
+    return oldElem!!
   }
 
   /**
@@ -275,7 +286,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     var x = getNode(fromIndex)
 
     for (i in fromIndex until toIndex) {
-      result.add(x.elem)
+      result.add(x.elem!!)
 
       if (i < size - 1)
         x = x.next!!
@@ -286,7 +297,9 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
 
   /** Removes all elements from this collection. */
   override fun clear() {
-    TODO("Not yet implemented")
+    first = Node(null, null, null)
+    last = first
+    size = 0
   }
 
   /**
@@ -294,13 +307,18 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
    * @return `true` if any element was removed from the collection, `false` if the collection was not modified.
    */
   override fun retainAll(elements: Collection<T>): Boolean {
+    var i = 0
     var check = false
 
-    for (element in this)
-      if (element !in elements) {
-        remove(element)
+    while (i in 0 until size) {
+      if (this[i] !in elements) {
+        remove(this[i])
+        i--
         check = true
       }
+
+      i++
+    }
 
     return check
   }
@@ -317,19 +335,10 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
 
   /** @return Node from position [index]. */
   private fun getNode(index: Int): Node<T> {
-    var x: Node<T>
+    var x = first
 
-    if (index < size / 2) {
-      x = first
-
-      for (t in 0 until index)
-        x = x.next!!
-    } else {
-      x = last
-
-      for (i in size - 1 downTo index + 1)
-        x = x.prev!!
-    }
+    for (i in 0 until index)
+      x = x.next!!
 
     return x
   }
@@ -378,7 +387,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
         current = current.prev!!
 
       i--
-      return current.elem
+      return current.elem!!
     }
 
     /** @return `true` if the iteration has more elements. `false` otherwise. */
@@ -389,6 +398,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
       return false
     }
 
+    /** @return the index of the element that would be returned by a subsequent call to [next]. */
     override fun nextIndex(): Int {
       return i + 1
     }
@@ -399,7 +409,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
         current = current.next!!
 
       i++
-      return current.elem
+      return current.elem!!
     }
 
     /** Adds the specified element element into the underlying collection. */
