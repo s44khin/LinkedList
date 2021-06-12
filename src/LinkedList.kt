@@ -187,14 +187,10 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   }
 
   /** @return the first element of the list. */
-  fun getFirst() : T {
-    return first.elem!!
-  }
+  fun getFirst() : T = first.elem!!
 
   /** @return the last element of the list. */
-  fun getLast() : T {
-    return last.elem!!
-  }
+  fun getLast() : T = last.elem!!
 
   /** Writes a new [element] to the [index] position of the list. */
   override operator fun set(index: Int, element: T): T {
@@ -246,9 +242,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   }
 
   /** @return `true` if the collection is empty (contains no elements), `false` otherwise. */
-  override fun isEmpty(): Boolean {
-    return size == 0
-  }
+  override fun isEmpty(): Boolean = size == 0
 
   /** @return `true` - if the [element] is contained in the specified collection, `false` otherwise. */
   override fun contains(element: T): Boolean {
@@ -351,29 +345,21 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   }
 
   /** @return `true` if the argument is the index of an existing element, `false` otherwise. */
-  private fun isIndex(index: Int): Boolean {
-    return index in 0 until size
-  }
+  private fun isIndex(index: Int): Boolean = index in 0 until size
 
   /** @return an iterator over the elements of this object. */
-  override fun iterator(): MutableIterator<T> {
-    return LinkedListIterator()
-  }
+  override fun iterator(): MutableIterator<T> = LinkedListIterator()
 
   /** @return a list iterator over the elements in this list (in proper sequence). */
-  override fun listIterator(): MutableListIterator<T> {
-    return LinkedListIterator()
-  }
+  override fun listIterator(): MutableListIterator<T> = LinkedListIterator()
 
   /** @return a list iterator over the elements in this list (in proper sequence), starting at the specified [index]. */
-  override fun listIterator(index: Int): MutableListIterator<T> {
-    return LinkedListIterator()
-  }
+  override fun listIterator(index: Int): MutableListIterator<T> = LinkedListIterator()
 
   /** Iterator. Allows to sequentially access the elements. */
   inner class LinkedListIterator: MutableListIterator<T> {
     var i = 0
-    var current = first
+    private var current = first
 
     /** @return `true` if there are elements in the iteration before the current element. */
     override fun hasPrevious(): Boolean {
@@ -384,9 +370,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     }
 
     /** @return the index of the element that would be returned by a subsequent call to [previous]. */
-    override fun previousIndex(): Int {
-      return i - 1
-    }
+    override fun previousIndex(): Int = i - 1
 
     /** @return the previous element in the iteration and moves the cursor position backwards. */
     override fun previous(): T {
@@ -406,9 +390,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     }
 
     /** @return the index of the element that would be returned by a subsequent call to [next]. */
-    override fun nextIndex(): Int {
-      return i + 1
-    }
+    override fun nextIndex(): Int = i + 1
 
     /** @return the next element in the iteration. */
     override fun next(): T {
@@ -420,9 +402,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     }
 
     /** Adds the specified element element into the underlying collection. */
-    override fun add(element: T) {
-      add(i, element)
-    }
+    override fun add(element: T) = add(i, element)
 
     /** Removes from the underlying collection the last element returned by this iterator. */
     override fun remove() {
