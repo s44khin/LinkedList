@@ -12,6 +12,10 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   /** Last element */
   private lateinit var last: Node<T>
 
+  /** @return the range of valid indices for the list */
+  val indices: IntRange
+    get() = IntRange(0, lastIndex())
+
   init {
     addAll(*args)
   }
@@ -240,6 +244,9 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
 
     return -1
   }
+
+  /** @return the last index of the list */
+  fun lastIndex() = size - 1
 
   /** @return `true` if the collection is empty (contains no elements), `false` otherwise. */
   override fun isEmpty(): Boolean = size == 0

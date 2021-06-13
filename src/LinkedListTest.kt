@@ -238,6 +238,13 @@ internal class LinkedListTest {
   }
 
   @Test
+  fun lastIndex() {
+    val list1 = LinkedList(0, 1, 2, 3, 4, 5)
+
+    assertEquals(5, list1.lastIndex())
+  }
+
+  @Test
   fun isEmpty() {
     val list1 = LinkedList<Int>()
     val list2 = LinkedList(0, 1)
@@ -322,16 +329,7 @@ internal class LinkedListTest {
   @Test
   fun getReverse() {
     val list1 = randomList(5)
-
-    for (elem in list1)
-      print("$elem ")
-
     val list2 = list1.getReverse()
-
-    println()
-
-    for (elem in list2)
-      print("$elem ")
 
     for (i in 0 until list1.size)
       assertEquals(list1[i], list2[list2.size - 1 - i])
