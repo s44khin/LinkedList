@@ -1,5 +1,3 @@
-import java.util.function.IntFunction
-
 /**
  * Kotlin implementation of LinkedList (Java)
  * @author s44khin
