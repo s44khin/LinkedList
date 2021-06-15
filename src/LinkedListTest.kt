@@ -13,6 +13,14 @@ internal class LinkedListTest {
   }
 
   @Test
+  fun testIndices() {
+    for (i in 0..10) {
+      val list1 = randomList(10)
+      assertEquals(0 until list1.size, list1.indices)
+    }
+  }
+
+  @Test
   fun add() {
     val list = randomList(0)
     list.add(-100)
