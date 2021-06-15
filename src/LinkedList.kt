@@ -334,6 +334,22 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     return cloneList
   }
 
+  /** @return a string representation of the object. */
+  override fun toString() : String {
+    var result = "["
+    var x = first
+
+    for (i in indices) {
+      if (i != size - 1) {
+        result += "${x.elem}, "
+        x = x.next!!
+      } else
+        result += "${x.elem}]"
+    }
+
+    return result
+  }
+
   /** Reverse the current list. */
   fun reverse() {
     var nodeStart = first
