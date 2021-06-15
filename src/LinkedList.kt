@@ -191,10 +191,10 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   }
 
   /** @return the first element of the list. */
-  fun getFirst() : T = first.elem!!
+  fun getFirst() = first.elem!!
 
   /** @return the last element of the list. */
-  fun getLast() : T = last.elem!!
+  fun getLast() = last.elem!!
 
   /** Writes a new [element] to the [index] position of the list. */
   override operator fun set(index: Int, element: T): T {
@@ -249,7 +249,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   fun lastIndex() = size - 1
 
   /** @return `true` if the collection is empty (contains no elements), `false` otherwise. */
-  override fun isEmpty(): Boolean = size == 0
+  override fun isEmpty() = size == 0
 
   /** @return `true` - if the [element] is contained in the specified collection, `false` otherwise. */
   override fun contains(element: T): Boolean {
@@ -383,7 +383,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   }
 
   /** @return `true` if the argument is the index of an existing element, `false` otherwise. */
-  private fun isIndex(index: Int): Boolean = index in 0 until size
+  private fun isIndex(index: Int) = index in 0 until size
 
   /** @return an iterator over the elements of this object. */
   override fun iterator(): MutableIterator<T> = LinkedListIterator()
@@ -408,7 +408,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     }
 
     /** @return the index of the element that would be returned by a subsequent call to [previous]. */
-    override fun previousIndex(): Int = i - 1
+    override fun previousIndex() = i - 1
 
     /** @return the previous element in the iteration and moves the cursor position backwards. */
     override fun previous(): T {
@@ -428,7 +428,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     }
 
     /** @return the index of the element that would be returned by a subsequent call to [next]. */
-    override fun nextIndex(): Int = i + 1
+    override fun nextIndex() = i + 1
 
     /** @return the next element in the iteration. */
     override fun next(): T {
