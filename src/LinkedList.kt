@@ -335,7 +335,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   }
 
   /** @return a string representation of the object. */
-  override fun toString() : String {
+  override fun toString(): String {
     var result = "["
     var x = first
 
