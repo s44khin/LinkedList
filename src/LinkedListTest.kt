@@ -313,6 +313,18 @@ internal class LinkedListTest {
   }
 
   @Test
+  fun testToString() {
+    val list1 = LinkedList(1, 2, 3, 4, 5, 6)
+    assertEquals("[1, 2, 3, 4, 5, 6]", list1.toString())
+
+    val list2 = LinkedList("one", "two", "three", "four", "five", "six")
+    assertEquals("[one, two, three, four, five, six]", list2.toString())
+
+    val list3 = LinkedList(1, 2, "three", "four", "five", "six")
+    assertEquals("[1, 2, three, four, five, six]", list3.toString())
+  }
+
+  @Test
   fun reverse() {
     val list1 = LinkedList(0, 1, 2, 3, 4, 5, 6)
     list1.reverse()
