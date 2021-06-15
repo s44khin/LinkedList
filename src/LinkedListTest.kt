@@ -355,4 +355,3 @@ internal class LinkedListTest {
       assertEquals(list1[i], list2[list2.size - 1 - i])
   }
 }
-
