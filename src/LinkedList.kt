@@ -381,6 +381,48 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     return newList
   }
 
+  /**
+   * Replaces each element of this LinkedList with the result of applying the [operator] to that element.
+   * @return a new LinkedList.
+   */
+  fun <S> replaceAll(operator: (T) -> S): LinkedList<S> {
+    val result = LinkedList<S>()
+
+    for (elem in this)
+      result.add(operator(elem))
+
+    return result
+  }
+
+  /**
+   * Replaces the elements of this LinkedList from [fromIndex] to [toIndex] this LinkedList with the
+   * result of applying the [operator] operator to this element.
+   * @return a new LinkedList.
+   */
+  fun <S> replace(fromIndex: Int, toIndex: Int, operator: (T) -> S): LinkedList<S> {
+    val result = LinkedList<S>()
+
+    for (i in fromIndex until toIndex)
+      result.add(operator(this[i]))
+
+    return result
+  }
+
+  /**
+   * Checks equality of two LinkedLists.
+   * @return `true` if the LinkedLists are equal, `false` otherwise.
+   */
+  override fun equals(other: Any?): Boolean {
+    if (other !is LinkedList<*>)
+      return false
+
+    for (i in indices)
+      if (this[i] != other[i])
+        return false
+
+    return true
+  }
+
   /** @return Node from position [index]. */
   private fun getNode(index: Int): Node<T> {
     var x : Node<T>

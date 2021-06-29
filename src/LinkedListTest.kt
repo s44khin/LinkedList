@@ -354,4 +354,35 @@ internal class LinkedListTest {
     for (i in 0 until list1.size)
       assertEquals(list1[i], list2[list2.size - 1 - i])
   }
+
+  @Test
+  fun replaceAll() {
+    val list1 = LinkedList(1, 2, 3, 4, 5, 6).replaceAll { it * 2 }
+    val list2 = LinkedList(2, 4, 6, 8, 10, 12)
+
+    for (i in list1.indices)
+      assertEquals(list2[i], list1[i])
+  }
+
+  @Test
+  fun replace() {
+    val list1 = LinkedList(1, 2, 3, 4, 5, 6, 7, 8, 9).replace(2, 5) { it * it }
+    val list2 =  LinkedList(9, 16, 25, 36)
+
+    for (i in list1.indices)
+      assertEquals(list2[i], list1[i])
+  }
+
+  @Test
+  fun equals() {
+    var list1 = LinkedList(1, 2, 3, 4, 5)
+    var list2 = LinkedList(1, 2, 3, 4, 5)
+
+    assertEquals(true, list1 == list2)
+
+    list1 = randomList(20)
+    list2 = list1.clone()
+
+    assertEquals(true, list1 == list2)
+  }
 }
