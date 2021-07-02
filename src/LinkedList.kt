@@ -140,6 +140,34 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
   }
 
   /**
+   * Removes the first element from this list.
+   * @return the first element from this list
+   */
+  fun removeFirst(): T {
+    val oldElem = first.elem
+
+    first = first.next!!
+    first.prev = null
+    size--
+
+    return oldElem!!
+  }
+
+  /**
+   * Removes the last element from this list.
+   * @return the last element from this list
+   */
+  fun removeLast(): T {
+    val oldElem = last.elem
+
+    last = last.prev!!
+    last.next = null
+    size--
+
+    return oldElem!!
+  }
+
+  /**
    * Removes all elements in this collection that are also in the set of arguments passed
    * @return `true` if any of the specified items have been removed from the collection, `false` if the collection has not changed.
    */
@@ -205,6 +233,20 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     val oldElem = node.elem
     node.elem = element
 
+    return oldElem!!
+  }
+
+  /** Writes a new [element] to the first position of the list. */
+  fun setFirst(element: T): T {
+    val oldElem = first.elem
+    first.elem = element
+    return oldElem!!
+  }
+
+  /** Writes a new [element] to the last position of the list. */
+  fun setLast(element: T): T {
+    val oldElem = last.elem
+    last.elem = element
     return oldElem!!
   }
 
@@ -421,6 +463,14 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
         return false
 
     return true
+  }
+
+  /** @return a hash code value for the object. */
+  override fun hashCode(): Int {
+    var result = size
+    result = 31 * result + first.hashCode()
+    result = 31 * result + last.hashCode()
+    return result
   }
 
   /** @return Node from position [index]. */

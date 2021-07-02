@@ -385,4 +385,42 @@ internal class LinkedListTest {
 
     assertEquals(true, list1 == list2)
   }
+
+  @Test
+  fun setFirst() {
+    val list = LinkedList(1, 2, 3, 4, 5, 6)
+    list.setFirst(1000)
+
+    assertEquals(1000, list[0])
+  }
+
+  @Test
+  fun setLast() {
+    val list = LinkedList(1, 2, 3, 4, 5, 6)
+    list.setLast(1000)
+
+    assertEquals(1000, list[5])
+  }
+
+  @Test
+  fun removeFirst() {
+    val list = LinkedList(1, 2, 3, 4)
+    list.removeFirst()
+    list.removeFirst()
+
+    assertEquals(2, list.size)
+    assertEquals(3, list[0])
+    assertEquals(4, list[1])
+  }
+
+  @Test
+  fun removeLast() {
+    val list = LinkedList("One", "Two", "Three", "Four")
+    list.removeLast()
+    list.removeLast()
+
+    assertEquals(2, list.size)
+    assertEquals("One", list[0])
+    assertEquals("Two", list[1])
+  }
 }
