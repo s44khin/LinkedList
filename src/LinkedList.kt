@@ -312,10 +312,9 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
 
   /** @return `true` - if the all [elements] of collection is contained in the specified collection, `false` otherwise. */
   override fun containsAll(elements: Collection<T>): Boolean {
-    for (elem in elements) {
+    for (elem in elements)
       if (!(contains(elem)))
         return false
-    }
 
     return true
   }
@@ -381,13 +380,12 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
     var result = "["
     var x = first
 
-    for (i in indices) {
+    for (i in indices)
       if (i != size - 1) {
         result += "${x.elem}, "
         x = x.next!!
       } else
         result += "${x.elem}]"
-    }
 
     return result
   }
@@ -504,7 +502,7 @@ class LinkedList<T>(vararg args: T): MutableList<T>, Cloneable {
 
   /** Iterator. Allows to sequentially access the elements. */
   inner class LinkedListIterator: MutableListIterator<T> {
-    var i = 0
+    private var i = 0
     private var current = first
 
     /** @return `true` if there are elements in the iteration before the current element. */
